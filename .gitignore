@@ -1,0 +1,21 @@
+# Entorno virtual
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribución / paquetes
+dist/
+build/
+*.egg-info/
+
+# Entorno de desarrollo
+.vscode/
+.idea/
+.DS_Store
+.env
