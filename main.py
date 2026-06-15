@@ -13,8 +13,8 @@ async def android_handler(websocket, path):
 
 async def main():
     port = int(os.environ.get("PORT", 8080))
+    print(f"🚀 Servidor en puerto {port}")  # <-- Este mensaje debe aparecer en logs
     async with websockets.serve(android_handler, "::", port, process_request=health_check):
-        print(f"🚀 Servidor en puerto {port}")
         await asyncio.Event().wait()
 
 if __name__ == "__main__":
