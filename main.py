@@ -96,18 +96,13 @@ async def android_handler(websocket):
         print("❌ [WEBSOCKET] App desconectada.")
 
 async def main():
-    # Añadimos el parámetro process_request=health_check
-    async with websockets.serve(android_handler, "::", port, process_request=health_check):
-        print(f"🚀 Servidor WebSocket corriendo en el puerto: {port}")
-        await client.connect()
-        await asyncio.Event().wait()
     print(f"🔄 Iniciando servidores...")
     
-    # Render asigna el puerto dinámicamente mediante variables de entorno
-    # Si no encuentra la variable (en tu PC local), usará el 8080 por defecto
+    # 1. Primero se obtiene y define la variable del puerto
     port = int(os.environ.get("PORT", 8080))
     
-    async with websockets.serve(android_handler, "::", port):
+    # 2. Después se usa la variable dentro del servidor
+    async with websockets.serve(android_handler, "::", port, process_request=health_check):
         print(f"🚀 Servidor WebSocket corriendo en el puerto: {port}")
         await client.connect()
         await asyncio.Event().wait()
