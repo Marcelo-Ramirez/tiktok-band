@@ -6,6 +6,14 @@ import re
 from TikTokLive import TikTokLiveClient
 from TikTokLive.events import CommentEvent, ConnectEvent, DisconnectEvent
 import websockets
+import http
+
+# Función para responder los pings de salud (Health Checks) de Render
+async def health_check(path, request_headers):
+    # Si la petición no es un WebSocket (es un ping de Render), devolvemos 200 OK
+    if "Upgrade" not in request_headers:
+        return http.HTTPStatus.OK, [], b"OK"
+    return None
 
 USERNAME = "elmananerobo"
 PORT = 8080
@@ -88,6 +96,11 @@ async def android_handler(websocket):
         print("❌ [WEBSOCKET] App desconectada.")
 
 async def main():
+    # Añadimos el parámetro process_request=health_check
+    async with websockets.serve(android_handler, "::", port, process_request=health_check):
+        print(f"🚀 Servidor WebSocket corriendo en el puerto: {port}")
+        await client.connect()
+        await asyncio.Event().wait()
     print(f"🔄 Iniciando servidores...")
     
     # Render asigna el puerto dinámicamente mediante variables de entorno
